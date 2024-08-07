@@ -1,0 +1,19 @@
+```{r}
+#| label: setup
+#| output: false
+library(tidyverse)
+library(readxl)
+ball_data <- read_excel("full_dataset.xlsx")
+```
+
+
+
+```{r}
+#ERA calculator
+ball_data |>
+  group_by(GameID, Pitcher, Inning) |>
+  summarize(runs = sum(RunsScored)) |>
+  group_by(Pitcher) |>
+  summarize(num_innings = n(), total_runs = sum(runs), ERA = 9*(total_runs/num_innings))
+  
+```

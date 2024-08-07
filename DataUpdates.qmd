@@ -1,0 +1,32 @@
+
+```{r}
+#| label: setup
+#| output: false
+library(tidyverse)
+library(writexl)
+ball_data <- read_csv("Winter Data/1-27-24_CalPoly_Isquad.csv")
+```
+The function below is used to streamline the joining of new data files using string functions
+```{r}
+#| output: false
+
+#Data Joining
+joining <- function(file_name1){ 
+  file_name1 <- c('Winter Data/', file_name1, "_CalPoly_Isquad.csv")
+  file_name1 <- str_flatten(file_name1)
+  file_name1 <- read_csv(file_name1)
+  file_name1$UTCDate <- ymd(file_name1$UTCDate)
+  file_name1$Date <- ymd(file_name1$Date)
+  ball_data <- full_join(ball_data, file_name1)
+}
+
+ball_data <- joining("1-28-24")
+ball_data <- joining("1-31-24")
+ball_data <- joining("2-2-24")
+ball_data <- joining("2-3-24")
+ball_data <- joining("2-9-24")
+ball_data <- joining("2-10-24")
+
+write_xlsx(ball_data, "full_dataset.xlsx") #creates an excel file with all data joined using the joining function
+
+```
